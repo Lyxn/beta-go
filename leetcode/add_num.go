@@ -4,11 +4,6 @@ import (
 	"sort"
 )
 
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
-
 func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 	res := &ListNode{}
 	addTwo(res, l1, l2, 0)
@@ -88,4 +83,51 @@ func twoSum(nums []int, lo, hi int, target int) (res [][]int) {
 		}
 	}
 	return
+}
+
+func largestPerimeter(A []int) int {
+	n := len(A)
+	sort.Ints(A)
+	res := 0
+	l := 0
+	r := 0
+	for i := 0; i < n-2; i++ {
+		l = max(l, i+1)
+		r = max(r, l+1)
+		if A[i]+A[l] <= A[r] {
+			continue
+		}
+		for r < n {
+			tl := l
+			tr := r
+			for tr < n && A[i]+A[tl] > A[tr] {
+				tr++
+			}
+			tr--
+			for tl < tr && A[i]+A[tl] > A[tr] {
+				tl++
+			}
+			tl--
+			if tr > tl {
+				res = max(res, A[i]+A[tl]+A[tr])
+			}
+			if tr > r || tl > l {
+				r = tr
+				l = tl
+			} else {
+				break
+			}
+		}
+	}
+	return res
+}
+
+func largestPerimeter0(a []int) int {
+	sort.Ints(a)
+	for i := len(a) - 1; i >= 2; i-- {
+		if a[i-2]+a[i-1] > a[i] {
+			return a[i-2] + a[i-1] + a[i]
+		}
+	}
+	return 0
 }
