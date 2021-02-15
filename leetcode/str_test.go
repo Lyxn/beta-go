@@ -90,22 +90,3 @@ func TestShortestWay(t *testing.T) {
 		}
 	}
 }
-
-func TestMinCut(t *testing.T) {
-	tests := []struct {
-		ss   string
-		want int
-	}{
-		{"fff", 0},
-		{"ccaacabacb", 3},
-		{"fifgbeajcacehiicccfecbfhhgfiiecdcjjffbghdidbhbdbfbfjccgbbdcjheccfbhafehieabbdfeigbiaggchaeghaijfbjhi", 75},
-		{"adabdcaebdcebdcacaaaadbbcadabcbeabaadcbcaaddebdbddcbdacdbbaedbdaaecabdceddccbdeeddccdaabbabbdedaaabcdadbdabeacbeadbaddcbaacdbabcccbaceedbcccedbeecbccaecadccbdbdccbcbaacccbddcccbaedbacdbcaccdcaadcbaebebcceabbdcdeaabdbabadeaaaaedbdbcebcbddebccacacddebecabccbbdcbecbaeedcdacdcbdbebbacddddaabaedabbaaabaddcdaadcccdeebcabacdadbaacdccbeceddeebbbdbaaaaabaeecccaebdeabddacbedededebdebabdbcbdcbadbeeceecdcdbbdcbdbeeebcdcabdeeacabdeaedebbcaacdadaecbccbededceceabdcabdeabbcdecdedadcaebaababeedcaacdbdacbccdbcece", 273},
-		{"bbdcdeaabdbaba", 5},
-	}
-	for _, tt := range tests {
-		ret := minCut(tt.ss)
-		if ret != tt.want {
-			t.Errorf("want=%v get=%v\n", tt.want, ret)
-		}
-	}
-}

@@ -238,6 +238,7 @@ func maxSumSubmatrix(matrix [][]int, k int) int {
 	return nx
 }
 
+//TODO Use OrderMap with Lower Bound Method
 func findMax(row []int, k int) int {
 	nx := math.MinInt32
 	dp := 0
@@ -277,4 +278,48 @@ func findMax1(row []int, k int) int {
 		}
 	}
 	return nx
+}
+
+func maximalSquare(matrix [][]byte) int {
+	m := len(matrix)
+	n := len(matrix[0])
+	dm := make([]int, n+1)
+	mx := 0
+	for i := 0; i < m; i++ {
+		dm1 := make([]int, n+1)
+		dr := make([]int, n+1)
+		for j := 1; j <= n; j++ {
+			if matrix[i][j-1] == 1 {
+				dr[j] = dr[j-1] + 1
+				dm1[j] = min(dr[j], min(dm[j]+1, dm[j-1]+1))
+				mx = max(mx, dm1[j])
+			}
+		}
+		dm = dm1
+	}
+	return mx * mx
+}
+
+func numSubmatrixSumTarget(matrix [][]int, target int) int {
+	m := len(matrix)
+	n := len(matrix[0])
+	res := 0
+	for i:=0; i<m; i++ {
+		dp := make([]int, n+1)
+		for j:=i; j<m; j++ {
+			pre := 0
+			for k:=0; k<n; k++ {
+				pre += matrix[j][k]
+				dp[k+1] += pre
+			}
+			for l:=0; l<n; l++ {
+				for r:=l+1; r<=n; r++ {
+					if dp[r] - dp[l] == target {
+						res++
+					}
+				}
+			}
+		}
+	}
+	return res
 }

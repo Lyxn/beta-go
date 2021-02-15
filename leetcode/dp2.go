@@ -172,3 +172,169 @@ func minDist1(houses []int) int {
 	}
 	return dist
 }
+
+func resetMat(dp [][]int, v int) {
+	m := len(dp)
+	n := len(dp[0])
+	for i := 0; i < m; i++ {
+		for j := 0; j < n; j++ {
+			dp[i][j] = v
+		}
+	}
+}
+
+func minCost(houses []int, cost [][]int, m int, n int, target int) int {
+	dp0 := make([][]int, m+1)
+	dp1 := make([][]int, m+1)
+	for i := 0; i <= m; i++ {
+		dp0[i] = make([]int, n+1)
+		dp1[i] = make([]int, n+1)
+	}
+	maxVal := math.MaxInt32
+	resetMat(dp0, maxVal)
+	for i := 0; i <= n; i++ {
+		dp0[0][i] = 0
+	}
+	for k := 1; k <= target; k++ {
+		resetMat(dp1, maxVal)
+		for i := k; i <= m; i++ {
+			minC1 := 1
+			minV1 := dp0[i-1][1]
+			minV2 := maxVal
+			for j := 2; j <= n; j++ {
+				if minV1 > dp0[i-1][j] {
+					minV2 = minV1
+					minV1 = dp0[i-1][j]
+					minC1 = j
+				} else if minV2 > dp0[i-1][j] {
+					minV2 = dp0[i-1][j]
+				}
+			}
+			cc := houses[i-1]
+			if cc != 0 {
+				if cc == minC1 {
+					dp1[i][cc] = min(dp1[i-1][cc], minV2)
+				} else {
+					dp1[i][cc] = min(dp1[i-1][cc], minV1)
+				}
+				continue
+			}
+			for j := 1; j <= n; j++ {
+				mj := minV1
+				if minC1 == j {
+					mj = minV2
+				}
+				dp1[i][j] = min(dp1[i-1][j], mj)
+				if dp1[i][j] < maxVal {
+					dp1[i][j] += cost[i-1][j-1]
+				}
+			}
+		}
+		dp0, dp1 = dp1, dp0
+	}
+	minV := maxVal
+	for j := 1; j <= n; j++ {
+		if minV > dp0[m][j] {
+			minV = dp0[m][j]
+		}
+	}
+	if minV == maxVal {
+		return -1
+	}
+	return minV
+}
+
+func ways(pizza []string, k int) (res int) {
+	m := len(pizza)
+	n := len(pizza[0])
+	preSum := make([][]int, m+1)
+	for i := 0; i <= m; i++ {
+		preSum[i] = make([]int, n+1)
+	}
+	for i := 0; i < m; i++ {
+		for j := 0; j < n; j++ {
+			preSum[i+1][j+1] = preSum[i+1][j] + preSum[i][j+1] - preSum[i][j]
+			if pizza[i][j] == 'A' {
+				preSum[i+1][j+1] += 1
+			}
+		}
+	}
+	if preSum[m][n] < k {
+		return 0
+	} else if k == 1 {
+		return 1
+	}
+	dp := make([][][]int, m)
+	for i := 0; i < m; i++ {
+		dp[i] = make([][]int, n)
+		for j := 0; j < n; j++ {
+			dp[i][j] = make([]int, k+1)
+			for s := 0; s <= k; s++ {
+				dp[i][j][s] = -1
+			}
+		}
+	}
+	mod := 1000000007
+	var recur func(x, y, s int) int
+	recur = func(x, y, s int) int {
+		if dp[x][y][s] >= 0 {
+			return dp[x][y][s]
+		}
+		res := preSum[m][n] + preSum[x][y] - preSum[x][n] - preSum[m][y]
+		cnt := 0
+		for i := x + 1; i < m; i++ {
+			rx := preSum[i][n] + preSum[x][y] - preSum[x][n] - preSum[i][y]
+			if rx > 0 && res-rx >= s-1 {
+				if s > 2 {
+					cnt += recur(i, y, s-1)
+				} else {
+					cnt += 1
+				}
+			}
+		}
+		for j := y + 1; j < n; j++ {
+			ry := preSum[m][j] + preSum[x][y] - preSum[x][j] - preSum[m][y]
+			if ry > 0 && res-ry >= s-1 {
+				if s > 2 {
+					cnt += recur(x, j, s-1)
+				} else {
+					cnt += 1
+				}
+			}
+		}
+		dp[x][y][s] = cnt % mod
+		return dp[x][y][s]
+	}
+	return recur(0, 0, k)
+}
+
+func mergeStones(stones []int, K int) int {
+	n := len(stones)
+	if (n-1) % (K-1) != 0 {
+		return -1
+	}
+	pre := make([]int, n+1)
+	for i:=0; i<n; i++ {
+		pre[i+1] = pre[i] + stones[i]
+	}
+	dp := make([][]int, n)
+	for i:=0; i<n; i++ {
+		dp[i] = make([]int, n)
+	}
+	for i:=n-2; i>=0;i-- {
+		for j:=i+K-1; j<n; j++ {
+			if j+1-i == K {
+				dp[i][j] = pre[j+1] - pre[i]
+				continue
+			}
+			dp[i][j] = math.MaxInt32
+			for p:=i; p<j; p+=K-1 {
+				dp[i][j] = min(dp[i][j], dp[i][p] + dp[p+1][j])
+			}
+			if (j-i) % (K-1) == 0 {
+				dp[i][j] += pre[j+1] - pre[i]
+			}
+		}
+	}
+	return dp[0][n-1]
+}

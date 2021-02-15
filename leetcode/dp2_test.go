@@ -102,3 +102,79 @@ func TestMinDistance(t *testing.T) {
 		}
 	}
 }
+
+func TestMinCost(t *testing.T) {
+	tests := []struct {
+		houses []int
+		cost   [][]int
+		target int
+		want   int
+	}{
+		{
+			[]int{0, 0, 0, 0, 0},
+			[][]int{{1, 10}, {10, 1}, {10, 1}, {1, 10}, {5, 1}},
+			3,
+			9,
+		},
+		{
+			[]int{0, 2, 1, 2, 0},
+			[][]int{{1, 10}, {10, 1}, {10, 1}, {1, 10}, {5, 1}},
+			3,
+			11,
+		},
+		{
+			[]int{0, 0, 0, 0, 0},
+			[][]int{{1, 10}, {10, 1}, {1, 10}, {10, 1}, {1, 10}},
+			5,
+			5,
+		},
+		{
+			[]int{3, 1, 2, 3},
+			[][]int{{1, 1, 1}, {1, 1, 1}, {1, 1, 1}, {1, 1, 1}},
+			3,
+			-1,
+		},
+	}
+	for _, tt := range tests {
+		m := len(tt.houses)
+		n := len(tt.cost[0])
+		ret := minCost(tt.houses, tt.cost, m, n, tt.target)
+		if ret != tt.want {
+			t.Errorf("get=%v want=%v", ret, tt.want)
+		}
+	}
+}
+
+func TestWays(t *testing.T) {
+	tests := []struct {
+		pizza []string
+		k     int
+		want  int
+	}{
+		{[]string{"AA."}, 2, 1},
+		//{[]string{"A..", "AAA", "..."}, 3, 3},
+	}
+	for _, tt := range tests {
+		ret := ways(tt.pizza, tt.k)
+		if ret != tt.want {
+			t.Errorf("get=%v want=%v", ret, tt.want)
+		}
+	}
+}
+
+func TestMergeStones(t *testing.T) {
+	tests := []struct {
+		stones []int
+		K      int
+		want   int
+	}{
+		//{[]int{3, 2, 4, 1}, 2, 20},
+		{[]int{3, 5, 1, 2, 6}, 3, 25},
+	}
+	for _, tt := range tests {
+		ret := mergeStones(tt.stones, tt.K)
+		if ret != tt.want {
+			t.Errorf("get=%v want=%v", ret, tt.want)
+		}
+	}
+}

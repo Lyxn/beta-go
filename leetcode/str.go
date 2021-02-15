@@ -80,42 +80,6 @@ func LengthOfLongestSubstring(s string) (ret int) {
 	return maxLen
 }
 
-func longestPalindrome(s string) string {
-	n := len(s)
-	if n == 0 {
-		return ""
-	}
-	maxLen := -1
-	maxLo := 0
-	maxHi := 0
-	for i := 0; i < n-1; i++ {
-		lo1, hi1 := expandCenter(s, i, i)
-		if hi1-lo1 > maxLen {
-			maxLen = hi1 - lo1
-			maxHi = hi1
-			maxLo = lo1
-		}
-		if s[i] != s[i+1] {
-			continue
-		}
-		lo2, hi2 := expandCenter(s, i, i+1)
-		if hi2-lo2 > maxLen {
-			maxLen = hi2 - lo2
-			maxHi = hi2
-			maxLo = lo2
-		}
-	}
-	return s[maxLo : maxHi+1]
-}
-
-func expandCenter(s string, lo, hi int) (lo1, hi1 int) {
-	for lo >= 0 && hi < len(s) && s[lo] == s[hi] {
-		lo--
-		hi++
-	}
-	return lo + 1, hi - 1
-}
-
 func longestDupSubstring(S string) string {
 	n := len(S)
 	nums := make([]int, n)
@@ -224,30 +188,4 @@ func longestSeq(source, target string) int {
 		}
 	}
 	return j
-}
-
-func minCut(s string) int {
-	n := len(s)
-	dp := make([]int, n+1)
-	dp[1] = 1
-	for i := 2; i <= n; i++ {
-		dp[i] = math.MaxInt32
-	}
-	for i := 1; i < n; i++ {
-		l0, r0 := expandCenter(s, i, i)
-		for l0 <= r0 {
-			dp[r0+1] = min(dp[r0+1], dp[l0]+1)
-			l0++
-			r0--
-		}
-		if s[i-1] == s[i] {
-			l1, r1 := expandCenter(s, i-1, i)
-			for l1 < r1 {
-				dp[r1+1] = min(dp[r1+1], dp[l1]+1)
-				l1++
-				r1--
-			}
-		}
-	}
-	return dp[n] - 1
 }

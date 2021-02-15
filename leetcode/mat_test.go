@@ -54,3 +54,16 @@ func TestMaxSumSubmatrix(t *testing.T) {
 	ret := maxSumSubmatrix(mat, k)
 	t.Logf("ret=%v", ret)
 }
+
+func TestMaximalSquare(t *testing.T) {
+	mat := [][]byte{{1, 0, 1, 1}, {0, 1, 1, 1}, {1, 1, 1, 1}}
+	ret := maximalSquare(mat)
+	t.Logf("ret=%v", ret)
+}
+
+func TestNumSubmatrixSumTarget(t *testing.T) {
+	mat := [][]int{{1, -1}, {-1, 1}}
+	target := 0
+	ret := numSubmatrixSumTarget(mat, target)
+	t.Logf("ret=%v", ret)
+}

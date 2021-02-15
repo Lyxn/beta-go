@@ -22,6 +22,13 @@ func EncodeJson(val interface{}) string {
 	return string(res)
 }
 
+func abs(x int) int {
+	if x < 0 {
+		return - x
+	}
+	return x
+}
+
 func MinInt(a int, nums ...int) (ret int) {
 	ret = a
 	for _, n := range nums {
@@ -58,6 +65,18 @@ func isEqualFloat(a, b float64) bool {
 	return d >= -EPS && d < EPS
 }
 
+func isEqualFloats(a, b []float64) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i := 0; i < len(a); i++ {
+		if !isEqualFloat(a[i], b[i]) {
+			return false
+		}
+	}
+	return true
+}
+
 func isEqualInts(a, b []int) bool {
 	if len(a) != len(b) {
 		return false
@@ -68,4 +87,10 @@ func isEqualInts(a, b []int) bool {
 		}
 	}
 	return true
+}
+
+func resetInts(nums []int) {
+	for i := 0; i < len(nums); i++ {
+		nums[i] = 0
+	}
 }
