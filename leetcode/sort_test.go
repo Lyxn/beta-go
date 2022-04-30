@@ -4,7 +4,7 @@ import (
 	"sort"
 	"testing"
 
-	"beta-go/util"
+	"leetcode-go/util"
 )
 
 func TestHeapSort(t *testing.T) {

@@ -1,8 +1,9 @@
 package leetcode
 
 import (
-	"beta-go/util"
 	"testing"
+
+	"leetcode-go/util"
 )
 
 func TestReversePair(t *testing.T) {
