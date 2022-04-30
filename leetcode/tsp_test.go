@@ -48,6 +48,7 @@ func TestShortestSuperstring(t *testing.T) {
 	}
 	for _, tt := range tests {
 		res := shortestSuperstring(tt.A)
+		//if len(res) != len(tt.want) {
 		if res != tt.want {
 			t.Errorf("want=%v get=%v", tt.want, res)
 		}

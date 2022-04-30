@@ -215,6 +215,9 @@ func firstUniqChar(s string) int {
 	cnt := make([]int, 26)
 	pos := make([]int, 26)
 	n := len(s)
+	for i := 0; i < 26; i++ {
+		pos[i] = n
+	}
 	for i := 0; i < n; i++ {
 		idx := int(s[i] - 'a')
 		cnt[idx] += 1
@@ -226,7 +229,7 @@ func firstUniqChar(s string) int {
 	}
 	mv := n
 	for i := 0; i < 26; i++ {
-		if pos[i] != 0 && pos[i] < mv {
+		if pos[i] < mv {
 			mv = pos[i]
 		}
 	}

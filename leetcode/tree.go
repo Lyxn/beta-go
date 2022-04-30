@@ -93,12 +93,13 @@ func serialize(root *TreeNode) (str string) {
 		}
 		nodes = nodes[n:]
 	}
-	for i := len(strs) - 1; i >= 0; i-- {
+	i := len(strs) - 1
+	for ; i >= 0; i-- {
 		if strs[i] != NilStr {
 			break
 		}
-		strs = strs[:i]
 	}
+	strs = strs[:i+1]
 	str = fmt.Sprintf("[%v]", strings.Join(strs, ","))
 	return
 }

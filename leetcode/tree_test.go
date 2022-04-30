@@ -34,8 +34,11 @@ func TestSerialize(t *testing.T) {
 	//str := "[1,2,3,null,null,4,5,6,7]"
 	str := "[1,2,3,null,8,4,5,6,7,null,null,9,null,10,11,12,13,14,15,16]"
 	root := deserialize(str)
-	str = serialize(root)
+	ret := serialize(root)
 	t.Logf("tree=%v", str)
+	if str != ret {
+		t.Errorf("want=%s get=%s", str, ret)
+	}
 }
 
 func TestGenerateTrees(t *testing.T) {
